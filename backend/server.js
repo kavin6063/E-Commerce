@@ -1,11 +1,14 @@
 import express from "express";
 import products from "./data/products.js"; // Correct path to products.js
 import cors from "cors";
+import connectDB from "./config/db.js";
 const app = express();
 const port = 5000;
 
 // Enable CORS for all routes and origins
 app.use(cors());
+
+connectDB();
 
 // Middleware to parse JSON bodies (for POST and PUT requests)
 app.use(express.json());
