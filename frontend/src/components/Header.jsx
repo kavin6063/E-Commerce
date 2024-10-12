@@ -31,7 +31,7 @@ const Header = () => {
       <div className="navbar z-50 fixed top-0 bg-base-100 dark:bg-gray-800">
         <div className="flex-1">
           <Link to={"/"} className="btn btn-ghost text-xl dark:text-white">
-            ROYAL OAK
+            ROYAL TEAK
           </Link>
         </div>
         <div className="flex-none">

@@ -6,22 +6,16 @@ import {
 } from "@remixicon/react";
 import Rating from "./Rating";
 import { Link } from "react-router-dom";
+import { useGetProductsQuery } from "../slices/productsApiSlices";
 
 const Products = () => {
-  const [products, setProducts] = useState([]);
-
-  // Fetch data when the component mounts
-  useEffect(() => {
-    const fetchProducts = async () => {
-      const response = await fetch("http://localhost:5000/api/products"); // Your backend API endpoint
-      const data = await response.json();
-      setProducts(data);
-      // console.log(data);
-    };
-
-    fetchProducts();
-  }, []);
-
+  const { data: products, error, isLoading } = useGetProductsQuery();
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+  if (error) {
+    return <div>{error}.Error</div>;
+  }
   return (
     <div className="container mx-auto my-4">
       <h1 className="text-3xl dark:text-white font-bold text-center mb-8">

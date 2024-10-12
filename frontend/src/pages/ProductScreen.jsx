@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useGetProductDetailsQuery } from "../slices/productsApiSlices";
 import { Link, useParams } from "react-router-dom";
 import Rating from "../components/Rating";
 import {
@@ -8,25 +8,17 @@ import {
 } from "react-icons/ri";
 const ProductScreen = () => {
   const { id: productId } = useParams();
-  const [product, setProduct] = useState({});
-
-  // Fetch product by specfic ID
-  useEffect(() => {
-    const fetchProduct = async () => {
-      const response = await fetch(
-        `http://localhost:5000/api/products/${productId}`
-      );
-      if (!response.ok) {
-        console.error("Product not found");
-        return;
-      }
-      const data = await response.json();
-      setProduct(data);
-    };
-
-    fetchProduct();
-  }, [productId]);
-
+  const {
+    data: product,
+    error,
+    isLoading,
+  } = useGetProductDetailsQuery(productId);
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+  if (error) {
+    return <div>{error}.Error</div>;
+  }
   return (
     <div>
       <Link to="/">
