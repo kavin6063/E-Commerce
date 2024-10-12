@@ -1,13 +1,20 @@
 import { useGetProductDetailsQuery } from "../slices/productsApiSlices";
 import { Link, useParams } from "react-router-dom";
 import Rating from "../components/Rating";
+
 import {
   RiShoppingCartLine,
   RiPlayFill,
   RiArrowLeftLine,
 } from "react-icons/ri";
+import { useDispatch } from "react-redux";
+import { useState } from "react";
+import { addToCart } from "../slices/cartSlice";
+
 const ProductScreen = () => {
   const { id: productId } = useParams();
+  const [qty, setQty] = useState(1);
+  const dispatch = useDispatch();
   const {
     data: product,
     error,
@@ -19,6 +26,9 @@ const ProductScreen = () => {
   if (error) {
     return <div>{error}.Error</div>;
   }
+  const addToCartHandler = () => {
+    dispatch(addToCart({ ...product, qty }));
+  };
   return (
     <div>
       <Link to="/">
@@ -75,7 +85,10 @@ const ProductScreen = () => {
                   <div>
                     <p className="font-medium">Qty</p>
                     <form>
-                      <select className="select select-primary w-full max-w-xs dark:bg-gray-700 dark:text-gray-200">
+                      <select
+                        className="select select-primary w-full max-w-xs dark:bg-gray-700 dark:text-gray-200"
+                        onChange={(e) => setQty(Number(e.target.value))}
+                      >
                         {[...Array(product.countInStock).keys()].map((item) => (
                           <option key={item + 1} value={item + 1}>
                             {item + 1}
@@ -88,6 +101,7 @@ const ProductScreen = () => {
               </div>
               <div className="flex card-actions space-x-10">
                 <button
+                  onClick={addToCartHandler}
                   disabled={product.countInStock === 0}
                   className="btn btn-secondary"
                 >
