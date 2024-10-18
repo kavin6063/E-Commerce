@@ -1,57 +1,53 @@
-import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { setTheme } from "../slices/themeSlice";
 
 const Header = () => {
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    const savedTheme = localStorage.getItem("theme");
-    return savedTheme === "dark";
-  });
+  const dispatch = useDispatch();
+  const { cartItems } = useSelector((state) => state.cart);
+  const theme = useSelector((state) => state.theme.theme);
 
-  useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [isDarkMode]);
-
-  //  toggle dark mode
-  const toggleDarkMode = () => {
-    setIsDarkMode((prev) => {
-      const newDarkModeState = !prev;
-
-      // Update localStorage
-      localStorage.setItem("theme", newDarkModeState ? "dark" : "light");
-
-      return newDarkModeState;
-    });
+  const handleThemeChange = (e) => {
+    dispatch(setTheme(e.target.value)); // Dispatch selected theme
   };
+
   return (
     <div>
-      <div className="navbar z-50 fixed top-0 bg-base-100 dark:bg-gray-800">
+      <div className="navbar z-50 fixed top-0 bg-base-100 dark:bg-gray-800 p-4">
         <div className="flex-1">
+          {/* Logo */}
           <Link to={"/"} className="btn btn-ghost text-xl dark:text-white">
             ROYAL TEAK
           </Link>
         </div>
+
+        {/* Right side (Cart & Profile) */}
         <div className="flex-none">
           <ul className="menu menu-horizontal font-medium px-1">
             <li>
               <Link to={"/cart"} className="dark:text-white">
-                Cart ( 3 )
+                Cart ({cartItems.length > 0 ? cartItems.length : 0})
               </Link>
             </li>
             <li>
-              <details>
+              <details className="dropdown">
                 <summary className="dark:text-white">kavin</summary>
-                <ul className="bg-base-100 dark:bg-gray-700 rounded-t-none p-2">
+                <ul className="bg-base-100 dark:bg-gray-700 rounded-t-none p-2 left-0">
                   <li>
-                    <button
-                      className="dark:text-white "
-                      onClick={toggleDarkMode}
+                    <select
+                      className="w-full p-2 dark:text-white dark:bg-gray-700"
+                      value={theme}
+                      onChange={handleThemeChange}
                     >
-                      {isDarkMode ? "Light Mode" : "Dark Mode"}
-                    </button>
+                      <option value="light">Light</option>
+                      <option value="dark">Dark</option>
+                      <option value="cupcake">Cupcake</option>
+                      <option value="bumblebee">Bumblebee</option>
+                      <option value="emerald">Emerald</option>
+                      <option value="corporate">Corporate</option>
+                      <option value="synthwave">Synthwave</option>
+                      <option value="retro">Retro</option>
+                    </select>
                   </li>
                   <li>
                     <a className="dark:text-white">Profile</a>
