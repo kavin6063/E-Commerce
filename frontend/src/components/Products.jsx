@@ -10,6 +10,7 @@ import { useGetProductsQuery } from "../slices/productsApiSlices";
 
 const Products = () => {
   const { data: products, error, isLoading } = useGetProductsQuery();
+  console.log("Products Query State:", { products, error, isLoading });
   if (isLoading) {
     return <div>Loading...</div>;
   }

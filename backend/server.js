@@ -8,7 +8,13 @@ import { notFound, errorHandler } from "./middleware/ErrorMiddleware.js";
 const app = express();
 const port = 5000;
 
-app.use(cors());
+// In your server.js/app.js
+app.use(
+  cors({
+    origin: "http://localhost:5173", // or whatever port your frontend runs on
+    credentials: true,
+  })
+);
 
 connectDB();
 

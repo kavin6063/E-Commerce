@@ -8,8 +8,10 @@ const router = express.Router();
 router.get(
   "/",
   asyncHandler(async (req, res) => {
+    console.log("GET /api/products request received");
     const products = await Product.find({});
     // throw new Error("Test Error");
+    console.log("Products found:", products.length);
     res.json(products);
   })
 );

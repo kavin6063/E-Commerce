@@ -4,29 +4,27 @@ import { setTheme } from "../slices/themeSlice";
 
 const Header = () => {
   const dispatch = useDispatch();
-  const { cartItems } = useSelector((state) => state.cart);
+  const { cartItem } = useSelector((state) => state.cart);
   const theme = useSelector((state) => state.theme.theme);
 
   const handleThemeChange = (e) => {
-    dispatch(setTheme(e.target.value)); // Dispatch selected theme
+    dispatch(setTheme(e.target.value));
   };
 
   return (
     <div>
       <div className="navbar z-50 fixed top-0 bg-base-100 dark:bg-gray-800 p-4">
         <div className="flex-1">
-          {/* Logo */}
           <Link to={"/"} className="btn btn-ghost text-xl dark:text-white">
             ROYAL TEAK
           </Link>
         </div>
 
-        {/* Right side (Cart & Profile) */}
         <div className="flex-none">
           <ul className="menu menu-horizontal font-medium px-1">
             <li>
               <Link to={"/cart"} className="dark:text-white">
-                Cart ({cartItems.length > 0 ? cartItems.length : 0})
+                Cart ({cartItem?.length || 0})
               </Link>
             </li>
             <li>
